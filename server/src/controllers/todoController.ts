@@ -8,9 +8,7 @@ export const createNewTodo = async (req: Request, res: Response) => {
     const todo = await Todo.create({
       title,
     });
-    res
-      .status(201)
-      .json({ success: true, message: "New todo added.", data: todo });
+    res.status(201).json({ success: true, message: "New todo added.", todo });
   } catch (error) {
     const err = error as Error;
     console.log("error", err);
@@ -23,7 +21,7 @@ export const getTodos = async (req: Request, res: Response) => {
     const todos = await Todo.find();
     res
       .status(200)
-      .json({ success: true, message: "All todos fetched.", data: todos });
+      .json({ success: true, message: "All todos fetched.", todos });
   } catch (error) {
     const err = error as Error;
     console.log("error", err);
@@ -38,7 +36,7 @@ export const getSingleTodo = async (req: Request, res: Response) => {
     const todo = await Todo.findById(id);
     res
       .status(200)
-      .json({ success: true, message: "Single todo fetched.", data: todo });
+      .json({ success: true, message: "Single todo fetched.", todo });
   } catch (error) {
     const err = error as Error;
     console.log("error", err);
@@ -59,7 +57,7 @@ export const updateTodo = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "Todo has been updated.",
-      data: updatedTodo,
+      updatedTodo,
     });
   } catch (error) {
     const err = error as Error;
