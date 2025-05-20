@@ -5,6 +5,7 @@ import userRoutes from "./routes/userRoutes";
 import { connectDB } from "./db";
 import cors from "cors";
 import errorHandler from "./middlewares/errorHandler";
+import cookieParser from "cookie-parser";
 
 dotenv.config({ path: ".env" });
 
@@ -18,9 +19,13 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
+
+// routes
 app.use("/api/v1", todoRoutes);
 app.use("/api/v1", userRoutes);
 
+// error handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;

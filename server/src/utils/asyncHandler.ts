@@ -1,14 +1,15 @@
 import { Request, Response, NextFunction } from "express";
+import { AuthRequest } from "../types/authType";
 
 const asyncHandler =
   (
     controllerFn: (
-      req: Request,
+      req: Request | AuthRequest,
       res: Response,
-      next?: NextFunction
+      next: NextFunction
     ) => Promise<void>
   ) =>
-  (req: Request, res: Response, next?: NextFunction) => {
+  (req: Request | AuthRequest, res: Response, next: NextFunction) => {
     Promise.resolve(controllerFn(req, res, next)).catch(next);
   };
 

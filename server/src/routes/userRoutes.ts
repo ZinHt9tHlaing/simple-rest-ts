@@ -7,6 +7,7 @@ import {
   registerController,
   updateUserProfile,
 } from "../controllers/userController";
+import { authHandler } from "../middlewares/authHandler";
 
 const router = express.Router();
 
@@ -16,11 +17,11 @@ router.post("/login", loginController);
 
 router.post("/logout", logoutController);
 
-router.get("/user-profile", getUserProfile);
+router.get("/user-profile", authHandler, getUserProfile);
 
 router
   .route("/user-profile/:id")
-  .put(updateUserProfile)
+  .put(authHandler, updateUserProfile)
   .delete(deleteUserProfile);
 
 export default router;
