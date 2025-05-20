@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  deleteUserProfile,
   getUserProfile,
   loginController,
   logoutController,
@@ -19,9 +18,6 @@ router.post("/logout", logoutController);
 
 router.get("/user-profile", authHandler, getUserProfile);
 
-router
-  .route("/user-profile/:id")
-  .put(authHandler, updateUserProfile)
-  .delete(deleteUserProfile);
+router.route("/user-profile/:id").put(authHandler, updateUserProfile);
 
 export default router;

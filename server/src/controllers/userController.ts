@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../models/user";
 import generatedToken from "../utils/generateToken";
 import asyncHandler from "../utils/asyncHandler";
+import { AuthRequest } from "../types/authType";
 
 export const registerController = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -73,19 +74,46 @@ export const logoutController = async (req: Request, res: Response) => {
 };
 
 export const getUserProfile = asyncHandler(
-  async (req: Request, res: Response) => {
-    res.status(200).json({ success: true, message: "User Profile" });
+  async (req: AuthRequest, res: Response) => {
+    console.log("user", req.user);
+    const currentUser = {
+      _id: req.user?._id,
+      username: req.user?.username,
+      email: req.user?.email,
+    };
+    res
+      .status(200)
+      .json({ success: true, message: "User Profile", currentUser });
   }
 );
 
 export const updateUserProfile = asyncHandler(
-  async (req: Request, res: Response) => {
-    res.status(200).json({ success: true, message: "User Profile Updated" });
-  }
-);
+  async (req: AuthRequest, res: Response) => {
+    const { username, email, newPassword } = req.body;
 
-export const deleteUserProfile = asyncHandler(
-  async (req: Request, res: Response) => {
-    res.status(200).json({ success: true, message: "User Profile Deleted" });
+    const existingUser = await User.findById(req.user?._id);
+
+    if (!existingUser) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    existingUser.username = username || existingUser.username;
+    existingUser.email = email || existingUser.email;
+    existingUser.password = newPassword || existingUser.password;
+
+    const updatedUser = await existingUser.save();
+
+    const selectedUser = {
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "User profile updated successfully",
+      user: selectedUser,
+    });
   }
 );
