@@ -71,3 +71,21 @@ export const logoutController = async (req: Request, res: Response) => {
     res.status(500).json({ error: true, message: err.message });
   }
 };
+
+export const getUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    res.status(200).json({ success: true, message: "User Profile" });
+  }
+);
+
+export const updateUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    res.status(200).json({ success: true, message: "User Profile Updated" });
+  }
+);
+
+export const deleteUserProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    res.status(200).json({ success: true, message: "User Profile Deleted" });
+  }
+);
