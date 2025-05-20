@@ -56,3 +56,18 @@ export const loginController = asyncHandler(
     }
   }
 );
+
+export const logoutController = async (req: Request, res: Response) => {
+  try {
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
+
+    res.status(200).json({ success: true, message: "User logged out." });
+  } catch (error) {
+    const err = error as Error;
+    console.log("error", err);
+    res.status(500).json({ error: true, message: err.message });
+  }
+};
