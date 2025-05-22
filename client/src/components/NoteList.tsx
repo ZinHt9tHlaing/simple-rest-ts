@@ -81,9 +81,9 @@ const NoteList = () => {
   };
 
   return (
-    <div className="p-10">
-      <h1 className="text-3xl font-bold mb-4">Note List</h1>
-      <ul className="space-y-2 w-3/4 md:w-1/3 mb-8 list-disc">
+    <div>
+      <h1 className="text-xl font-bold mb-4">Share List</h1>
+      <ul className="space-y-2 w-3/4 md:w-1/3 mb-8">
         {notes.map((note) => (
           <li
             key={note._id}
@@ -116,7 +116,7 @@ const NoteList = () => {
         />
         <button
           type="submit"
-          className="bg-black cursor-pointer text-white px-2 py-1 rounded active:scale-90 duration-200"
+          className="text-white bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
         >
           {editMode ? "Update" : "Create"}
         </button>
