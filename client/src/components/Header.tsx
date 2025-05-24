@@ -3,7 +3,9 @@ import { Link } from "react-router";
 const Header = () => {
   return (
     <nav className="mb-10 mt-3 flex justify-between items-center">
-      <h1 className="text-3xl font-bold">ShareNote</h1>
+      <Link to={"/"}>
+        <h1 className="text-3xl font-bold">ShareNote</h1>
+      </Link>
       <div className="space-x-3">
         <Link to={"/login"}>
           <button
@@ -13,7 +15,7 @@ const Header = () => {
             Login
           </button>
         </Link>
-        <Link to={"/Register"}>
+        <Link to={"/register"}>
           <button
             type="button"
             className="text-black bg-white cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"

@@ -5,7 +5,7 @@ import {
   getNotes,
   updateNote,
 } from "../services/noteServices";
-import type { NoteType } from "../types/NoteTypes";
+import type { NoteType } from "../types/noteTypes";
 
 const NoteList = () => {
   const [notes, setNotes] = useState<NoteType[]>([]);

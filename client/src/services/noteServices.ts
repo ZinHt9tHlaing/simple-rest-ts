@@ -1,4 +1,4 @@
-import type { NoteType } from "../types/NoteTypes";
+import type { NoteType } from "../types/noteTypes";
 import axios from "axios";
 
 let API_URL = "";
