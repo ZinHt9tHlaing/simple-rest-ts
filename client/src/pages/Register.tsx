@@ -45,7 +45,7 @@ const Register = () => {
             </span>
           )}
         </div>
-        <div className="">
+        <div>
           <label
             htmlFor="email"
             className="block mb-1 text-sm font-medium text-slate-700"
