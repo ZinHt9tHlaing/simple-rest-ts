@@ -39,11 +39,11 @@ const Login = () => {
             placeholder="example@gmail.com"
             className="form"
           />
-          {/* {errors.email && (
+          {errors.email && (
             <span className="text-red-500 text-sm font-medium">
               {errors.email.message}
             </span>
-          )} */}
+          )}
         </div>
         <div>
           <label

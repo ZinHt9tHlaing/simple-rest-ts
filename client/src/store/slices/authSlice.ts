@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface AuthState {
-  useInfo: any;
+  useInfo: string | null;
 }
 
 const initialState: AuthState = {
