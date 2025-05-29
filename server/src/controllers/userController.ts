@@ -44,10 +44,12 @@ export const loginController = asyncHandler(
       if (existingUser && (await existingUser.matchPassword(password))) {
         generatedToken(res, existingUser._id);
 
+        const { _id, username, email } = existingUser.toObject();
+
         res.status(200).json({
           success: true,
           message: "User logged in successfully.",
-          user: existingUser,
+          user: { _id, username, email },
         });
       }
     } catch (error) {

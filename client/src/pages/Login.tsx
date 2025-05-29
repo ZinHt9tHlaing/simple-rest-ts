@@ -2,10 +2,17 @@ import * as z from "zod";
 import { loginSchema } from "../schemas//login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useLoginMutation } from "../store/slices/endpoints/authApi";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../store/slices/authSlice";
 
 type IFormInput = z.infer<typeof loginSchema>;
 
 const Login = () => {
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
   const {
     register,
     handleSubmit,
@@ -14,8 +21,14 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const submitHandler: SubmitHandler<IFormInput> = (data) => {
-    console.log("data", data);
+  const submitHandler: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      const response = await login(data).unwrap();
+      dispatch(setUserInfo(response));
+      // console.log("Login response:", response);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
   return (
