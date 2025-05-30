@@ -7,7 +7,7 @@ const Main = () => {
     <section className="px-3 max-w-4xl mx-auto">
       <ToastContainer
         position="bottom-right"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick={false}

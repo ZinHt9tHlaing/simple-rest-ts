@@ -1,9 +1,26 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
 import type { RootState } from "../store/store";
+import { useLogoutMutation } from "../store/slices/endpoints/authApi";
+import { clearUserInfo } from "../store/slices/authSlice";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const useInfo = useSelector((state: RootState) => state.auth.useInfo);
+  const [logout, { isLoading }] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = async () => {
+    try {
+      await logout({});
+      dispatch(clearUserInfo());
+      navigate("/");
+      toast.info("Logged out successfully!");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <nav className="mb-10 mt-3 flex justify-between items-center">
@@ -14,9 +31,15 @@ const Header = () => {
         {useInfo ? (
           <button
             type="button"
-            className="text-red-600 bg-white font-semibold cursor-pointer py-1 px-2 rounded border-2 border-red-600 active:scale-90 duration-200"
+            disabled={isLoading}
+            onClick={logoutHandler}
+            className="text-red-600 disabled:cursor-not-allowed w-[75px] bg-white font-semibold cursor-pointer py-1 px-2 rounded border-2 border-red-600 active:scale-90 duration-200"
           >
-            Logout
+            {isLoading ? (
+              <div className="w-4 h-4 mx-auto border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+            ) : (
+              "Logout"
+            )}
           </button>
         ) : (
           <>
