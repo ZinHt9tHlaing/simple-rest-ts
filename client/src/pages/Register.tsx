@@ -2,20 +2,34 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import * as z from "zod";
 import { registerSchema } from "../schemas/register";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router";
+import { useRegisterMutation } from "../store/slices/endpoints/authApi";
+import { toast } from "react-toastify";
 
 type IFormInput = z.infer<typeof registerSchema>;
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [registerMutation, { isLoading }] = useRegisterMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<IFormInput>({
     resolver: zodResolver(registerSchema),
   });
 
-  const submitHandler: SubmitHandler<IFormInput> = (data) => {
-    console.log("data", data);
+  const submitHandler: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      await registerMutation(data).unwrap();
+      reset();
+      toast.success("Registration successful!");
+      navigate("/login");
+    } catch (error: any) {
+      toast.error("Registration failed!", error);
+    }
   };
 
   return (
@@ -87,9 +101,12 @@ const Register = () => {
         </div>
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="text-white disabled:cursor-not-allowed bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
+          disabled={isSubmitting || isLoading}
+          className="flex justify-center items-center gap-2 text-white disabled:cursor-not-allowed disabled:bg-gray-700 bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
         >
+          {isLoading && (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          )}
           Register
         </button>
       </form>
