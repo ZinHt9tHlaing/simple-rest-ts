@@ -3,20 +3,27 @@ import { loginSchema } from "../schemas//login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useLoginMutation } from "../store/slices/endpoints/authApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../store/slices/authSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import type { RootState } from "../store/store";
+import { useEffect } from "react";
 
 type IFormInput = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
+  const useInfo = useSelector((state: RootState) => state.auth.useInfo);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<IFormInput>({
     resolver: zodResolver(loginSchema),
   });
@@ -25,11 +32,19 @@ const Login = () => {
     try {
       const response = await login(data).unwrap();
       dispatch(setUserInfo(response));
-      // console.log("Login response:", response);
-    } catch (error) {
-      console.error("Login error:", error);
+      reset();
+      toast.success("Login successful!");
+      navigate("/");
+    } catch (err: any) {
+      toast.error(err?.data?.message || err.error);
     }
   };
+
+  useEffect(() => {
+    if (useInfo) {
+      navigate("/");
+    }
+  }, [useInfo, navigate]);
 
   return (
     <div className="max-w-2xs md:max-w-sm mx-auto mt-20">
@@ -80,9 +95,12 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="text-white disabled:cursor-not-allowed bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
+          disabled={isSubmitting || isLoading}
+          className="flex justify-center items-center gap-2 text-white disabled:cursor-not-allowed disabled:bg-gray-700 bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
         >
+          {isLoading && (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          )}
           Login
         </button>
       </form>

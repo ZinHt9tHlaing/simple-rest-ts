@@ -13,6 +13,7 @@ const NoteList = () => {
   const [refresh, setRefresh] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editId, setEditId] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
 
   const makeRefresh = () => {
     setRefresh(!refresh);
@@ -20,11 +21,14 @@ const NoteList = () => {
 
   useEffect(() => {
     const fetchNotes = async () => {
+      setLoading(true);
       try {
         const data = await getNotes();
         setNotes(data);
       } catch (error) {
         console.log("Fail to fetch note :", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchNotes();
@@ -80,39 +84,53 @@ const NoteList = () => {
     }
   };
 
+  const NoteSkeleton = () => {
+    return (
+      <li className="flex justify-between items-center bg-gray-200 animate-pulse rounded-xl px-4 py-3">
+        <div className="h-4 bg-gray-400 rounded w-3/4 me-3"></div>
+        <div className="h-4 bg-gray-400 rounded w-1/5"></div>
+      </li>
+    );
+  };
+
   return (
     <div>
       <h1 className="text-xl font-bold mb-4">Share List</h1>
-      <ul className="space-y-2 w-3/4 md:w-1/3 mb-8">
-        {notes.map((note) => (
-          <li
-            key={note._id}
-            className="bg-gray-200 shadow-md rounded-xl px-4 py-3 hover:bg-gray-300 transition duration-200"
-          >
-            {note.title}
-            <button
-              type="button"
-              className="text-white bg-red-600 cursor-pointer px-2 py-1 rounded active:scale-90 duration-200 float-right"
-              onClick={() => handleDeleteNote(note._id)}
-            >
-              Delete
-            </button>
-            <button
-              type="button"
-              className="text-white bg-emerald-700 mx-2 cursor-pointer px-2 py-1 rounded active:scale-90 duration-200 float-right"
-              onClick={() => handleModeChange(note.title, note._id)}
-            >
-              Edit
-            </button>
-          </li>
-        ))}
+      <ul className="space-y-2 w-3/4 md:w-2/3 mb-8">
+        {loading
+          ? Array.from({ length: notes.length || 3 }).map((_, idx) => (
+              <NoteSkeleton key={idx} />
+            ))
+          : notes.map((note) => (
+              <li
+                key={note._id}
+                className="bg-gray-200 shadow-md rounded-xl px-4 py-3 hover:bg-gray-300 transition duration-200"
+              >
+                {note.title}
+                <button
+                  type="button"
+                  className="text-white bg-red-600 cursor-pointer px-2 py-1 rounded active:scale-90 duration-200 float-right"
+                  onClick={() => handleDeleteNote(note._id)}
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  className="text-white bg-emerald-700 mx-2 cursor-pointer px-2 py-1 rounded active:scale-90 duration-200 float-right"
+                  onClick={() => handleModeChange(note.title, note._id)}
+                >
+                  Edit
+                </button>
+              </li>
+            ))}
       </ul>
-      <form action="" onSubmit={submitHandler}>
+
+      <form onSubmit={submitHandler}>
         <input
           type="text"
           value={msg}
           onChange={(e) => setMsg(e.target.value)}
-          className="border-2 border-gray-700 me-2 rounded px-2 py-1"
+          className="w-2/4 md:w-1/3 border-2 border-gray-700 me-2 rounded px-2 py-1"
         />
         <button
           type="submit"
