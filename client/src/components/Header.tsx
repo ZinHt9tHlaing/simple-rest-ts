@@ -6,7 +6,7 @@ import { clearUserInfo } from "../store/slices/authSlice";
 import { toast } from "react-toastify";
 
 const Header = () => {
-  const useInfo = useSelector((state: RootState) => state.auth.useInfo);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const [logout, { isLoading }] = useLogoutMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Header = () => {
         <h1 className="text-3xl font-bold">ShareNote</h1>
       </Link>
       <div className="space-x-3">
-        {useInfo ? (
+        {userInfo ? (
           <button
             type="button"
             disabled={isLoading}

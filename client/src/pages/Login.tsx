@@ -17,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
-  const useInfo = useSelector((state: RootState) => state.auth.useInfo);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
   const {
     register,
@@ -41,10 +41,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (useInfo) {
+    if (userInfo) {
       navigate("/");
     }
-  }, [useInfo, navigate]);
+  }, [userInfo, navigate]);
 
   return (
     <div className="max-w-2xs md:max-w-sm mx-auto mt-20">
