@@ -1,8 +1,13 @@
 import { createBrowserRouter } from "react-router";
-import { ErrorComponent, NoteListComponent } from "../components";
+import {
+  ErrorComponent,
+  NoteListComponent,
+  ProtectComponent,
+} from "../components";
 import Main from "../layouts/Main";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
+import Profile from "../pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +26,14 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectComponent>
+            <Profile />
+          </ProtectComponent>
+        ),
       },
     ],
   },

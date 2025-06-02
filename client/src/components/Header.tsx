@@ -4,6 +4,7 @@ import type { RootState } from "../store/store";
 import { useLogoutMutation } from "../store/slices/endpoints/authApi";
 import { clearUserInfo } from "../store/slices/authSlice";
 import { toast } from "react-toastify";
+import { CgProfile } from "react-icons/cg";
 
 const Header = () => {
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
@@ -29,18 +30,26 @@ const Header = () => {
       </Link>
       <div className="space-x-3">
         {userInfo ? (
-          <button
-            type="button"
-            disabled={isLoading}
-            onClick={logoutHandler}
-            className="text-red-600 disabled:cursor-not-allowed w-[75px] bg-white font-semibold cursor-pointer py-1 px-2 rounded border-2 border-red-600 active:scale-90 duration-200"
-          >
-            {isLoading ? (
-              <div className="w-4 h-4 mx-auto border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
-            ) : (
-              "Logout"
-            )}
-          </button>
+          <>
+            <Link
+              to={"/profile"}
+              className="text-white bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
+            >
+             Profile
+            </Link>
+            <button
+              type="button"
+              disabled={isLoading}
+              onClick={logoutHandler}
+              className="text-red-600 disabled:cursor-not-allowed w-[75px] bg-white font-semibold cursor-pointer py-1 px-2 rounded border-2 border-red-600 active:scale-90 duration-200"
+            >
+              {isLoading ? (
+                <div className="w-4 h-4 mx-auto border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                "Logout"
+              )}
+            </button>
+          </>
         ) : (
           <>
             <Link to={"/login"}>
