@@ -31,17 +31,19 @@ const Header = () => {
       <div className="space-x-3">
         {userInfo ? (
           <>
-            <Link
-              to={"/profile"}
-              className="text-white bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
-            >
-             Profile
+            <Link to={"/profile"}>
+              <button
+                type="button"
+                className="text-white bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
+              >
+                Profile
+              </button>
             </Link>
             <button
               type="button"
               disabled={isLoading}
               onClick={logoutHandler}
-              className="text-red-600 disabled:cursor-not-allowed w-[75px] bg-white font-semibold cursor-pointer py-1 px-2 rounded border-2 border-red-600 active:scale-90 duration-200"
+              className="text-white disabled:cursor-not-allowed w-[75px] bg-red-600 font-semibold cursor-pointer py-1 px-2 rounded border-2 border-red-600 active:scale-90 duration-200"
             >
               {isLoading ? (
                 <div className="w-4 h-4 mx-auto border-2 border-red-600 border-t-transparent rounded-full animate-spin" />

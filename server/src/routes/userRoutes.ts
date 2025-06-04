@@ -16,8 +16,9 @@ router.post("/login", loginController);
 
 router.post("/logout", logoutController);
 
-router.get("/user-profile", authHandler, getUserProfile);
-
-router.route("/user-profile/:id").put(authHandler, updateUserProfile);
+router
+  .route("/user-profile")
+  .get(authHandler, updateUserProfile)
+  .put(authHandler, updateUserProfile);
 
 export default router;
