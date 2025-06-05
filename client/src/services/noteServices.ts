@@ -11,6 +11,8 @@ if (import.meta.env.VITE_MODE === "production") {
   API_URL = import.meta.env.VITE_API_URL;
 }
 
+axios.defaults.withCredentials = true;
+
 // export const getNotes = async (): Promise<NoteType[]> => {
 //   const response = await fetch(`${API_URL}/todos`);
 //   const notes = await response.json();
