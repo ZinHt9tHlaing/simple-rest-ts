@@ -6,10 +6,11 @@ import {
   getTodos,
   updateTodo,
 } from "../controllers/todoController";
+import { authHandler } from "../middlewares/authHandler";
 
 const router = express.Router();
 
-router.post("/create", createNewTodo);
+router.post("/create", authHandler, createNewTodo);
 
 router.get("/todos", getTodos);
 

@@ -6,6 +6,10 @@ import {
   updateNote,
 } from "../services/noteServices";
 import type { NoteType } from "../types/noteTypes";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
+import { Link } from "react-router";
+import { toast } from "react-toastify";
 
 const NoteList = () => {
   const [notes, setNotes] = useState<NoteType[]>([]);
@@ -14,6 +18,7 @@ const NoteList = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editId, setEditId] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
   const makeRefresh = () => {
     setRefresh(!refresh);
@@ -42,8 +47,10 @@ const NoteList = () => {
       if (editMode) {
         await updateNote(editId, msg);
         setEditMode(false);
+        toast.success("Note updated successfully!");
       } else {
         await createNote(msg);
+        toast.success("Note created successfully!");
       }
       setMsg("");
       makeRefresh();
@@ -78,6 +85,7 @@ const NoteList = () => {
     try {
       await deleteNote(id);
       makeRefresh();
+      toast.success("Note deleted successfully!");
     } catch (error) {
       console.log("Fail to delete note :", error);
       throw new Error("Fail to delete note");
@@ -125,20 +133,34 @@ const NoteList = () => {
             ))}
       </ul>
 
-      <form onSubmit={submitHandler}>
-        <input
-          type="text"
-          value={msg}
-          onChange={(e) => setMsg(e.target.value)}
-          className="w-2/4 md:w-1/3 border-2 border-gray-700 me-2 rounded px-2 py-1"
-        />
-        <button
-          type="submit"
-          className="text-white bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
-        >
-          {editMode ? "Update" : "Create"}
-        </button>
-      </form>
+      <>
+        {userInfo ? (
+          <form onSubmit={submitHandler}>
+            <input
+              type="text"
+              value={msg}
+              onChange={(e) => setMsg(e.target.value)}
+              className="w-2/4 md:w-1/3 border-2 border-gray-700 me-2 rounded px-2 py-1"
+            />
+            <button
+              type="submit"
+              className="text-white bg-black cursor-pointer py-1 px-2 rounded border-2 border-black active:scale-90 duration-200"
+            >
+              {editMode ? "Update" : "Create"}
+            </button>
+          </form>
+        ) : (
+          <p className="border-2 px-4 py-2 w-fit">
+            <Link
+              to={"/login"}
+              className="underline text-red-600 font-bold text-lg"
+            >
+              Login
+            </Link>{" "}
+            for creating your own notes.
+          </p>
+        )}
+      </>
     </div>
   );
 };
