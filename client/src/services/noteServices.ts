@@ -63,5 +63,5 @@ export const updateNote = async (id: string, title: string) => {
 // };
 
 export const deleteNote = async (id: string) => {
-  await axios.delete(`${API_URL}/todo/${id}`);
+  await axios.delete(`${API_URL}/todo/${id}`, { withCredentials: true });
 };

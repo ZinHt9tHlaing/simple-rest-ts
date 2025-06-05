@@ -39,9 +39,8 @@ const authHandler = asyncHandler(
 
       next();
     } catch (error) {
-      const err = error as Error;
-      console.log("error", err);
-      res.status(500).json({ error: true, message: err.message });
+      res.status(401);
+      throw new Error("Not authorized, invalid token.");
     }
   }
 );

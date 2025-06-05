@@ -20,6 +20,8 @@ const NoteList = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 
+  // console.log("userInfo :", userInfo?.user?._id);
+
   const makeRefresh = () => {
     setRefresh(!refresh);
   };
@@ -115,20 +117,24 @@ const NoteList = () => {
                 className="bg-gray-200 shadow-md rounded-xl px-4 py-3 hover:bg-gray-300 transition duration-200"
               >
                 {note.title}
-                <button
-                  type="button"
-                  className="text-white bg-red-600 cursor-pointer px-2 py-1 rounded active:scale-90 duration-200 float-right"
-                  onClick={() => handleDeleteNote(note._id)}
-                >
-                  Delete
-                </button>
-                <button
-                  type="button"
-                  className="text-white bg-emerald-700 mx-2 cursor-pointer px-2 py-1 rounded active:scale-90 duration-200 float-right"
-                  onClick={() => handleModeChange(note.title, note._id)}
-                >
-                  Edit
-                </button>
+                {note.userId === userInfo?.user?._id && (
+                  <>
+                    <button
+                      type="button"
+                      className="text-white bg-red-600 cursor-pointer px-2 py-1 rounded active:scale-90 duration-200 float-right"
+                      onClick={() => handleDeleteNote(note._id)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      type="button"
+                      className="text-white bg-emerald-700 mx-2 cursor-pointer px-2 py-1 rounded active:scale-90 duration-200 float-right"
+                      onClick={() => handleModeChange(note.title, note._id)}
+                    >
+                      Edit
+                    </button>
+                  </>
+                )}
               </li>
             ))}
       </ul>
